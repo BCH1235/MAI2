@@ -1,4 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/
+
 # --- CRA 기본 ---
 /node_modules
 /.pnp
@@ -21,18 +22,31 @@ yarn-debug.log*
 yarn-error.log*
 
 # --- 추가: 프론트엔드 ---
-.env            # 루트 .env
-*.env           # 혹시 다른 이름의 env 파일
-*.log           # 기타 로그
+.env            # 루트 .env (API 키 보안!)
+*.env           # 다른 env 파일들도 차단
+*.log           # 기타 로그 파일
 
-# --- 추가: 백엔드(Flask) ---
-
+# --- 추가: 백엔드(Flask) & 불필요한 대용량 파일 ---
 ai-music-backend/venv/
-ai-music-backend/tmp/
-ai-music-backend/static/audio/
 ai-music-backend/__pycache__/
 ai-music-backend/*.pyc
+ai-music-backend/.env
 
-# --- 공통 파이썬 캐시 ---
+# 생성된 음악 파일 폴더 
+ai-music-backend/generated_midi/
+ai-music-backend/outputs/
+ai-music-backend/temp_scores/
+ai-music-backend/uploads/
+ai-music-backend/tmp/
+ai-music-backend/static/audio/
+
+# 공통 파이썬 캐시
 __pycache__/
 *.pyc
+
+# 오디오 및 바이너리 파일 차단
+*.wav
+*.mp3
+*.mid
+*.midi
+*.pdf

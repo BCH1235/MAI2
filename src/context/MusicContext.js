@@ -29,7 +29,7 @@ const initialState = {
     selectedGenres: [],
     selectedMoods: [],
     description: '',
-    duration: 30, // 초 단위 (기본 2분)
+    duration: 15, // 초 단위 
     isGenerating: false,
     generationProgress: 0,
   },

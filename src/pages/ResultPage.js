@@ -608,7 +608,7 @@ const ResultPage = () => {
                             return (
                               <Chip
                                 key={moodId}
-                                label={`${mood.emoji} ${mood.label}`}
+                                label={mood.emoji ? `${mood.emoji} ${mood.label}` : mood.label}
                                 size="small"
                                 sx={{
                                   bgcolor: colors.cardBg,

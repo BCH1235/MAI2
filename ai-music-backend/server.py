@@ -179,12 +179,19 @@ def worker_generate(task_id: str, prompt: str, genres, moods, duration: int,
                     tmp_path: Optional[str]):
     try:
         _set_task_status(task_id, "running")
+        
+        # ▼▼▼▼▼▼ [수정됨] 한글 프롬프트를 파파고로 번역하는 로직 추가 ▼▼▼▼▼▼
+        translated_prompt = translate_to_english(prompt)
+        print(f"[worker_generate] 최종 적용될 프롬프트: {translated_prompt}")
+        
         inputs: Dict[str, Any] = {
-            "prompt": prompt or "instrumental background music",
+            "prompt": translated_prompt or "instrumental background music", # 번역된 프롬프트 사용
             "duration": duration,
             "output_format": "mp3",
             "normalization_strategy": "peak",
         }
+        # ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
         if tmp_path:
             with open(tmp_path, "rb") as f:
                 data = f.read()
@@ -598,4 +605,4 @@ def task_status():
 
 # ───── 서버 실행 ─────────────────────────────────────────────────
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)    
+    app.run(host="127.0.0.1", port=5000, debug=True)

@@ -6,7 +6,7 @@ const BeatPadContext = createContext(null);
 const initialState = {
   // --- 재생 및 시퀀서 관련 ---
   isPlaying: false,
-  bpm: 60,
+  bpm: 80,
   currentStep: 0,
   pattern: clonePattern(PRESETS["Rock 1"]),
 

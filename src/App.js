@@ -54,15 +54,16 @@ function App() {
       <MusicContextProvider>
         <Router>
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            {/* ✅ 모든 페이지에서 공통으로 보여줄 Navbar */}
+            {/* 모든 페이지에서 공통으로 보여줄 Navbar */}
             <Navbar />
 
-            {/* ✅ 라우터로 각 페이지 연결 */}
+            {/*  라우터로 각 페이지 연결 */}
             <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default' }}>
               <Routes>
+                <Route path="/" element={<HomeFeed />} />
                 <Route path="/home" element={<HomeFeed />} />
-                {/* 기본 홈 (AI 음악 생성) */}
-                <Route path="/" element={<MusicGeneration />} />
+                {/*  (AI 음악 생성) */}
+                
                 <Route path="/generate" element={<MusicGeneration />} />
 
                 {/* 음악 변환 페이지 */}

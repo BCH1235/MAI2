@@ -660,9 +660,31 @@ const Library = () => {
         )}
       </Container>
 
-      <Dialog open={renameDialog.open} onClose={handleCloseRename} fullWidth maxWidth="sm">
-        <DialogTitle>곡 제목 수정</DialogTitle>
-        <DialogContent>
+      <Dialog 
+        open={renameDialog.open} 
+        onClose={handleCloseRename} 
+        fullWidth 
+        maxWidth="sm"
+        PaperProps={{
+          sx: {
+            bgcolor: colors.cardBg, // 어두운 배경색 (#1A1A1A)
+            border: `1px solid ${colors.border}`, // 테두리
+            borderRadius: 3, // 둥근 모서리
+            boxShadow: '0 20px 50px rgba(0,0,0,0.8)', // 그림자
+            color: colors.text // 기본 글자색 흰색
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          fontWeight: 600, 
+          fontSize: '1.2rem',
+          borderBottom: `1px solid ${colors.border}`,
+          mb: 1
+        }}>
+          곡 제목 수정
+        </DialogTitle>
+        
+        <DialogContent sx={{ pt: 3 }}>
           <TextField
             autoFocus
             margin="dense"
@@ -672,17 +694,60 @@ const Library = () => {
             onChange={(e) =>
               setRenameDialog((prev) => ({ ...prev, value: e.target.value }))
             }
+            sx={{
+              mt: 2,
+              // 입력창 디자인 커스텀
+              '& .MuiInputBase-root': {
+                color: colors.text,
+                bgcolor: '#050505', // 입력창 내부 더 어두운 색
+                borderRadius: 2,
+              },
+              '& .MuiInputLabel-root': {
+                color: colors.textLight, // 라벨 색상 (회색)
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: colors.accent, // 포커스 시 라벨 색상 (민트)
+              },
+              // 테두리 색상 제어
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: colors.border,
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: colors.primary, // 마우스 올렸을 때
+              },
+              '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: colors.accent, // 입력 중일 때 (민트)
+              }
+            }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseRename} disabled={renameDialog.saving}>
+        
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button 
+            onClick={handleCloseRename} 
+            disabled={renameDialog.saving}
+            sx={{ 
+              color: colors.textLight,
+              fontWeight: 600,
+              '&:hover': { bgcolor: 'rgba(255,255,255,0.05)' }
+            }}
+          >
             취소
           </Button>
           <Button
             onClick={handleRenameSubmit}
             disabled={renameDialog.saving}
+            variant="contained"
+            sx={{
+              bgcolor: colors.accent,
+              color: '#000000', // 버튼 글자 검은색
+              fontWeight: 700,
+              px: 3,
+              '&:hover': { bgcolor: colors.primary },
+              '&:disabled': { bgcolor: colors.border, color: colors.textLight }
+            }}
           >
-            저장
+            {renameDialog.saving ? '저장 중...' : '저장'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -43,23 +43,23 @@ const THEME_PRESETS = [
   {
     id: 'focus',
     title: '집중 · 공부',
-    description: '로파이, 앰비언트 계열의 차분한 배경음악',
-    genreTags: ['lofi', 'ambient', 'edm'],
-    moodKeywords: ['차분', '집중', '잔잔', '평화'],
+    description: '잡생각을 없애주는 차분한 로파이 비트',
+    genreTags: ['lofi'], 
+    moodKeywords: ['집중', '차분한', '평화로운'],
   },
   {
     id: 'relax',
     title: '힐링 · 휴식',
-    description: '재즈, 어쿠스틱, 부드러운 사운드',
-    genreTags: ['jazz', 'citypop', 'rnb'],
-    moodKeywords: ['편안', '잔잔', '로맨틱'],
+    description: '지친 마음을 달래주는 재즈와 클래식 선율',
+    genreTags: ['jazz', 'classic'],
+    moodKeywords: ['편안한', '우울한', '슬픈', '행복한'],
   },
   {
     id: 'retro',
     title: '게임 · 레트로',
-    description: '8bit, 신스, 레트로 느낌의 배경음',
-    genreTags: ['synthwave', 'edm', 'game'],
-    moodKeywords: ['레트로', '신나는', '몽환'],
+    description: '에너지를 충전하는 신나는 시티팝과 EDM',
+    genreTags: ['citypop', 'edm'],
+    moodKeywords: ['신나는', '활기찬', '레트로', '강렬한'],
   },
 ];
 
@@ -684,13 +684,8 @@ const HomeFeed = () => {
                           />
                         </Box>
 
-                        {category === 'beat' && item.bpm && (
-                          <Typography sx={{ color: colors.textLight, fontSize: 12, mb: 1 }}>
-                            {item.bpm} BPM · {getBeatGenreLabel()}
-                          </Typography>
-                        )}
-
-                        {item.description && (
+                      
+                        {category !== 'beat' && item.description && (
                           <Typography
                             sx={{
                               color: colors.textLight,
@@ -700,6 +695,7 @@ const HomeFeed = () => {
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
+                              mt: 1, // 간격 추가
                             }}
                           >
                             {item.description}
