@@ -19,7 +19,7 @@
 - **AI 비트 메이커**: Magenta `MusicVAE` 기반 9트랙 드럼 시퀀서. 코너 프리셋을 블렌딩·경로 드로잉으로 변주하고, WAV로 내보낸 뒤 생성 페이지로 바로 전달할 수 있습니다.
 - **악보 → 음악 변환**: PDF 악보를 업로드하면 Audiveris(OCR)로 MusicXML을 추출하고, MIDI/WAV/MP3 중 원하는 형식으로 렌더링합니다.
 - **라이브러리 & 크리에이터**: Firebase Auth/Firestore/Storage를 통해 생성 결과를 저장·검색·재생하고, 크리에이터 프로필과 홈 피드에서 공유합니다.
-- **보조 기능**: Papago 번역을 통한 한국어 프롬프트 지원, 로그인 보호가 필요한 페이지에 `RequireAuth` 가드 적용, 제작 중 진행 상황 표시와 알림 토스트 제공.
+
 
 ## 기술 스택
 - **Frontend**: React 19, React Router 7, MUI 7, Context API, React Error Boundary
@@ -96,18 +96,9 @@
 - `POST /api/process-score` : PDF 악보 업로드 → MusicXML → MIDI/WAV/MP3 변환
 - `GET  /api/audio/<filename>` : 생성된 오디오 파일 다운로드
 
-## README에 이미지·배지 넣기 팁
-- 이미지를 `images/` 폴더에 두고 상대 경로로 참조:
-  - Markdown: `![샘플](images/screenshot.png)`
-  - HTML: `<img src="images/screenshot.png" width="720" />`
-- 기술 스택 뱃지는 [shields.io](https://shields.io/)에서 생성:
-  - 예시: `![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white&style=for-the-badge)`
-- 용량을 줄이고 싶은 경우 1280px 정도로 리사이즈하거나 WebP 변환 후 넣으면 렌더링이 빨라집니다.
-
 ## 스크립트
 - `npm start` : 프론트엔드 개발 서버
 - `npm test`  : React 테스트 러너
 - `npm run build` : 프로덕션 번들 생성
 
-## 라이선스
-`LICENSE` 파일을 확인하세요.
+
