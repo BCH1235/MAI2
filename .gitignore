@@ -26,7 +26,7 @@ yarn-error.log*
 *.log           # 기타 로그
 
 # --- 추가: 백엔드(Flask) ---
-
+ai-music-backend/.env
 ai-music-backend/venv/
 ai-music-backend/tmp/
 ai-music-backend/static/audio/

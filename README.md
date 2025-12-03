@@ -1,126 +1,113 @@
 # AI Music Studio
 
-React와 AI를 활용한 웹 기반 음악 생성 및 비트 메이킹 스튜디오입니다.
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&style=for-the-badge)
+![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white&style=for-the-badge)
+![MUI](https://img.shields.io/badge/MUI-007FFF?logo=mui&logoColor=white&style=for-the-badge)
+![Magenta](https://img.shields.io/badge/Magenta%20MusicVAE-ff4f8b?logo=google&logoColor=white&style=for-the-badge)
+![Tone.js](https://img.shields.io/badge/Tone.js-18181B?logo=sonic-pi&logoColor=EF4444&style=for-the-badge)
+![TensorFlow.js](https://img.shields.io/badge/TFJS-FF6F00?logo=tensorflow&logoColor=white&style=for-the-badge)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black&style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-3C873A?logo=node.js&logoColor=white&style=for-the-badge)
 
-AI Music Studio는 사용자가 텍스트 프롬프트나 오디오 파일을 기반으로
-새로운 음악을 생성하고, 내장된 AI 비트 메이커를 통해 독창적인 드럼
-패턴을 만들 수 있는 웹 애플리케이션입니다.
+텍스트/오디오 프롬프트로 음악을 생성하고, AI 비트 메이커와 악보 변환 기능까지 제공하는 올인원 웹 스튜디오입니다.
 
-![Project Screenshot](images/screenshot.png)
-
-------------------------------------------------------------------------
+![앱 미리보기](images/screenshot.png)
 
 ## 주요 기능
-
--   **AI 음악 생성**
-    -   장르, 분위기, 텍스트 설명을 조합하여 새로운 음악을 생성합니다.\
-    -   오디오 파일을 첨부하여 기존 멜로디나 리듬을 기반으로 음악을
-        생성할 수 있습니다.
--   **AI 비트 메이커 (Beat Maker)**
-    -   Google Magenta의 `MusicVAE` 모델을 활용한 9트랙 드럼 시퀀서를
-        제공합니다.\
-    -   네 개의 코너 프리셋을 AI로 실시간 블렌딩하여 새로운 비트를
-        탐색할 수 있습니다.\
-    -   BPM 및 마디 조절, WAV 파일로 내보내기 기능을 지원합니다.
--   **음악 라이브러리**
-    -   생성된 모든 음악을 한 곳에서 관리, 재생, 검색 및 필터링할 수
-        있습니다.
-
-------------------------------------------------------------------------
+- **AI 음악 생성**: 장르·분위기·설명·길이로 프롬프트를 만들고 Replicate MusicGen으로 신규 트랙을 생성하거나, 참조 오디오를 업로드해 변주를 만듭니다.
+- **AI 비트 메이커**: Magenta `MusicVAE` 기반 9트랙 드럼 시퀀서. 코너 프리셋을 블렌딩·경로 드로잉으로 변주하고, WAV로 내보낸 뒤 생성 페이지로 바로 전달할 수 있습니다.
+- **악보 → 음악 변환**: PDF 악보를 업로드하면 Audiveris(OCR)로 MusicXML을 추출하고, MIDI/WAV/MP3 중 원하는 형식으로 렌더링합니다.
+- **라이브러리 & 크리에이터**: Firebase Auth/Firestore/Storage를 통해 생성 결과를 저장·검색·재생하고, 크리에이터 프로필과 홈 피드에서 공유합니다.
+- **보조 기능**: Papago 번역을 통한 한국어 프롬프트 지원, 로그인 보호가 필요한 페이지에 `RequireAuth` 가드 적용, 제작 중 진행 상황 표시와 알림 토스트 제공.
 
 ## 기술 스택
+- **Frontend**: React 19, React Router 7, MUI 7, Context API, React Error Boundary
+- **AI & Audio**: Replicate MusicGen, Magenta `@magenta/music`, TensorFlow.js, Tone.js 시퀀싱·미디 재생
+- **Backend**: Python 3 + Flask, `replicate` SDK, `music21`, `midi2audio`, Papago 번역 API 연동
+- **Infra/DB**: Firebase Auth · Firestore · Storage, dotenv 기반 환경 변수 관리
 
--   **프론트엔드**: React, React Router, Material-UI (MUI)\
--   **상태 관리**: React Context API\
--   **AI & 오디오**
-    -   Hugging Face / Replicate: 텍스트 기반 음악 생성을 위한 백엔드
-        API\
-    -   @magenta/music & @tensorflow/tfjs: AI 비트 메이커의 핵심
-        (MusicVAE)\
-    -   Tone.js: 웹 오디오 재생 및 시퀀싱\
--   **백엔드**: Python (Flask), aistudio-music-api\
--   **API**: Papago API (텍스트 번역)
+## 아키텍처 한눈에
+- React(MUI) 앱 → Flask API(`/api/...`) 호출 → Replicate로 음원 생성 또는 Audiveris로 악보 OCR 후 `music21`/FluidSynth로 렌더링
+- 생성된 오디오는 Flask 정적 경로에 저장하고 URL을 반환하며, 필요 시 Firestore에 메타데이터 기록
+- Tone.js + Magenta MusicVAE가 브라우저에서 실시간 비트 패턴을 합성하고, 세션 스토리지를 통해 생성 페이지와 결과 페이지 간 상태를 교환
 
-------------------------------------------------------------------------
+### 디렉터리 가이드
+```
+/                    # 루트
+├── src/             # React 소스
+│   ├── pages/       # MusicGeneration, MusicConversion(Beat Maker), ScoreToMusic 등
+│   ├── components/  # beat/, common/, layout/ Navbar 등
+│   ├── services/    # musicApi(백엔드 호출), libraryWriter
+│   ├── context/     # MusicContext (전역 상태)
+│   └── lib/firebase # Firebase 초기화
+├── ai-music-backend/ # Flask 서버
+│   ├── server.py     # Replicate·Audiveris·Papago 연동 API
+│   └── requirements.txt
+└── images/screenshot.png # README 미리보기용
+```
 
-## 시작하기
+## 빠른 시작
+### 사전 준비
+- Node.js 16+ / npm
+- Python 3.9+ / pip
+- Java 11+ 및 Audiveris 설치 경로 (악보 변환 시 필요)
+- FluidSynth 설치 권장(미디 → 오디오 렌더링 안정화)
 
-### 필수 요구사항
+### 프론트엔드 실행
+1. 의존성 설치: `npm install`
+2. `.env` 생성(루트):
+   ```
+   REACT_APP_API_BASE_URL=http://127.0.0.1:5000/api
+   REACT_APP_FIREBASE_API_KEY=...
+   REACT_APP_FIREBASE_AUTH_DOMAIN=...
+   REACT_APP_FIREBASE_PROJECT_ID=...
+   REACT_APP_FIREBASE_STORAGE_BUCKET=...
+   REACT_APP_FIREBASE_MESSAGING_SENDER_ID=...
+   REACT_APP_FIREBASE_APP_ID=...
+   REACT_APP_FIREBASE_MEASUREMENT_ID=...
+   ```
+3. 개발 서버: `npm start` (기본 http://localhost:3000)
 
--   Node.js (v16 이상 권장)\
--   npm 또는 yarn\
--   Python 3
+### 백엔드 실행
+1. 이동: `cd ai-music-backend`
+2. 가상환경 생성 및 활성화:
+   ```
+   python -m venv venv
+   source venv/bin/activate        # macOS/Linux
+   venv\Scripts\activate           # Windows
+   ```
+3. 의존성 설치: `pip install -r requirements.txt`
+4. `.env` 생성(백엔드 폴더):
+   ```
+   REPLICATE_API_TOKEN=your-token
+   REPLICATE_MODEL=meta/musicgen          # 선택
+   PAPAGO_CLIENT_ID=your-id               # 선택 (한국어 프롬프트 번역)
+   PAPAGO_CLIENT_SECRET=your-secret
+   AUDIVERIS_JAR_DIR=/path/to/audiveris/lib
+   AUDIVERIS_JAVA=/path/to/java           # 없으면 JAVA_HOME/bin/java 사용
+   ```
+   - 악보 변환을 쓰지 않으면 Audiveris/Java 설정은 건너뛸 수 있습니다.
+5. 서버 실행: `python server.py` (기본 http://127.0.0.1:5000)
 
-### 설치 및 실행
+### 주요 API 엔드포인트
+- `POST /api/music/generate` : 텍스트·장르·무드·길이(+옵션 오디오)로 AI 트랙 생성, 비동기 작업 ID 반환
+- `GET  /api/music/task/status?task_id=...` : 생성 상태 폴링 및 오디오 URL 조회
+- `POST /api/process-score` : PDF 악보 업로드 → MusicXML → MIDI/WAV/MP3 변환
+- `GET  /api/audio/<filename>` : 생성된 오디오 파일 다운로드
 
-1.  **저장소 클론**
+## README에 이미지·배지 넣기 팁
+- 이미지를 `images/` 폴더에 두고 상대 경로로 참조:
+  - Markdown: `![샘플](images/screenshot.png)`
+  - HTML: `<img src="images/screenshot.png" width="720" />`
+- 기술 스택 뱃지는 [shields.io](https://shields.io/)에서 생성:
+  - 예시: `![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white&style=for-the-badge)`
+- 용량을 줄이고 싶은 경우 1280px 정도로 리사이즈하거나 WebP 변환 후 넣으면 렌더링이 빨라집니다.
 
-    ``` bash
-    git clone https://github.com/your-username/your-repository.git
-    cd your-repository
-    ```
+## 스크립트
+- `npm start` : 프론트엔드 개발 서버
+- `npm test`  : React 테스트 러너
+- `npm run build` : 프로덕션 번들 생성
 
-2.  **프론트엔드 설정** (새 터미널에서 실행)
-
-    ``` bash
-    # 의존성 설치
-    npm install
-
-    # 개발 서버 실행 (http://localhost:3000)
-    npm start
-    ```
-
-3.  **백엔드 설정** (다른 새 터미널에서 실행)
-
-    ``` bash
-    cd ai-music-backend
-
-    # 가상 환경 생성 및 활성화 (권장)
-    python -m venv venv
-    source venv/bin/activate  # macOS/Linux
-    # venv\Scripts\activate    # Windows
-
-    # 의존성 설치
-    pip install -r requirements.txt
-
-    # .env 파일 생성 및 API 키 설정
-    # (PAPAGO_CLIENT_ID, PAPAGO_CLIENT_SECRET, REPLICATE_API_TOKEN 등)
-
-    # 서버 실행 (http://localhost:5000)
-    python server.py
-    ```
-
-이제 브라우저에서 `http://localhost:3000`으로 접속하여 애플리케이션을
-사용할 수 있습니다.
-
-------------------------------------------------------------------------
-
-## 프로젝트 구조
-
-이 프로젝트는 React 프론트엔드와 Python Flask 백엔드가 분리된 형태로 구성되어 있습니다.
-
-    /
-    ├── ai-music-backend/    # Python Flask 백엔드 서버
-    │   ├── server.py        # 메인 API 서버 파일
-    │   └── requirements.txt # 백엔드 의존성 목록
-    │
-    ├── public/              # 정적 파일 (HTML, 이미지 등)
-    │
-    └── src/                 # React 프론트엔드 소스 코드
-        ├── components/      # 재사용 가능한 공용 컴포넌트
-        │   ├── beat/        # 비트 메이커 관련 UI (패드, 그리드 등)
-        │   └── common/      # 장르/분위기 선택 등 범용 UI
-        │
-        ├── context/         # 전역 상태 관리 (MusicContext)
-        │
-        ├── lib/             # 외부 라이브러리 래퍼 (Magenta.js, Tone.js)
-        │   └── drumsVAE.js  # MusicVAE 핵심 로직
-        │
-        ├── pages/           # 페이지 단위 컴포넌트
-        │   ├── MusicGeneration.js
-        │   ├── MusicConversion.js (BeatMaker)
-        │   └── Library.js
-        │
-        ├── services/        # API 통신 로직 (musicApi.js)
-        │
-        └── App.js           # 메인 애플리케이션 컴포넌트
+## 라이선스
+`LICENSE` 파일을 확인하세요.
